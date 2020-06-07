@@ -19,7 +19,7 @@ var Plot = {
   baseLineY: null
 };  
 
-function FormularCanvas(props){
+function FormularCanvas_sin(props){
     let points = []; //calc points based on props, minor baseline offset.
     let angle = 360;
 
@@ -39,21 +39,22 @@ function FormularCanvas(props){
     </div>)
 }
 
-function FormularCanvas_pendingOnFormularCheck(props){
+function FormularCanvas(props){
     // const {L, D, Db} = props;
     let L = 200;
     let D = 70;
     let Db = 40;
+    let C = 340;
 
     debugger;
 
 
     let points = []; //calc points based on props, minor baseline offset.
     for(let f=1; f<500; f++){
-        let tanP = Math.PI / 8000 / L / f;
-        let logP = 1 + 0.25 * Db * Db / D / D * Math.tan(tanP);
+        let tanP = Math.PI * L * f / 500 / C / C;
+        let logP = 1 + 0.25 * Db * Db / D / D * Math.tan(tanP) * Math.tan(tanP);
         let TL = 10 * Math.log10(logP)
-        points.push({x: f, y: TL})
+        points.push({x: f + Plot.ox, y: TL + Plot.oy + 300})
     }
 
     return (<div className='canvas'>
