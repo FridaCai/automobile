@@ -1,0 +1,17 @@
+.constainer{
+    width: 45%;
+    background: aliceblue;
+}
+.left{
+    float: left;
+}
+.right{
+    float: right;
+}
+.line{
+    clear:both;
+}
+.mark{
+    background: lightblue;
+    padding: 3px 5px;
+}

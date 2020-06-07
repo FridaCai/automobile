@@ -1,0 +1,33 @@
+.canvas{
+    float: left;
+    width: 100%;
+    height: 300px;
+    position: relative;
+    margin-top: 50px;
+}
+.baseline{
+    position: absolute;
+    font-size: 1px;
+    overflow: hidden;
+    background:grey;
+}
+.x{
+    left:0;
+    height:1px;
+    width: 100%;
+
+}
+.y{
+    top:0;
+    height:100%;
+    width:1px;
+}
+
+.point{
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    font-size: 1px;
+    background: red;
+    overflow: hidden;
+}
