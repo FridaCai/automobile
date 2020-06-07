@@ -8,12 +8,23 @@ import {connect} from 'react-redux'
 
 
 
-
+let yData = [];
 class FormularCanvas extends React.Component{
-    super(props){
-        debugger;
+    constructor(props){
+        super(props);
         Chart.defaults.global.elements.point.radius = 0;
         Chart.defaults.global.legend.display = false;
+        this.chart = null;
+
+        const step = 1;
+        const from = 0;
+        const to = 1000;
+
+        this.xData = [];
+        for(let i=from; i<=to; i=i+step){
+            this.xData.push(i);
+        }
+        this.updateYData();
     }
 
     calc(f){
@@ -25,25 +36,21 @@ class FormularCanvas extends React.Component{
         let logP = 1 + 0.25 * Db * Db / D / D * Math.tan(tanP) * Math.tan(tanP);
         let TL = 10 * Math.log10(logP)
 
+        if(f==100){
+            console.log('TL: ', TL);
+        }
+
         return TL;
+    }
+    updateYData(){
+        yData = this.xData.map(x=>this.calc(x), this);
     }
     componentDidMount(){ 
         //todo: if chart exist, just update.
         let ctx = document.getElementById('canvas');
-
-        const step = 1;
-        const from = 0;
-        const to = 1000;
-
-        let xData = [];
-        for(let i=from; i<=to; i=i+step){
-            xData.push(i);
-        }
-
-        let labels = xData.map(x=>x.toString());
-        let yData = xData.map(x=>this.calc(x), this);
-
-        var myChart = new Chart(ctx, {
+        let labels = this.xData.map(x=>x.toString());
+        this.updateYData();
+        this.chart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels,
@@ -55,6 +62,7 @@ class FormularCanvas extends React.Component{
                 }]
             },
             options: {
+                responsive: true,
                 title: {
 					display: true,
 					text: 'Transmission Loss - Quarter Wave Tube'
@@ -81,6 +89,13 @@ class FormularCanvas extends React.Component{
             }
         })
     }
+    componentDidUpdate(){
+        if(this.chart){
+            this.updateYData();
+            this.chart.data.datasets[0].data = yData;
+            this.chart.update();
+        }
+    }
 
     render(){
         return (
@@ -91,7 +106,7 @@ class FormularCanvas extends React.Component{
 
 
 let mapStateToProps = (state)=>{
-    return state;
+    return Object.assign({}, state);
 }
 let mapDispatchToProps = null;
   
